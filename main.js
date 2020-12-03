@@ -2,8 +2,9 @@ const demColor = '#0015BC'
 const repColor = '#FF0000'
 let diff = trump_diff;
 let partyColor = repColor;
+let otherColor = demColor;
 let candidate_name = 'Trump'
-let isLoading = false;
+let pronoun = 'his';
 
 function loadIncidenceMap() {
     var countiesMap = Highcharts.geojson(
@@ -19,22 +20,21 @@ function loadIncidenceMap() {
         l => l.properties['hc-group'] === '__separator_lines__'
     );
 
+    // set minColor to be other party's color, set pronouns for candidates (used in tooltips), and set title
+    if (partyColor == repColor) {
+        otherColor = demColor;
+        pronoun = 'his';
+    } else {
+        otherColor = repColor;
+        pronoun = 'her';
+    }
+
     setTimeout(function () {
-        console.log(repColor)
         Highcharts.mapChart('map', {
             chart: {
                 borderWidth: 1,
                 marginRight: 20,
                 height: 650
-            },
-
-            loading: {
-                labelStyle: {
-                    color: 'white'
-                },
-                style: {
-                    backgroundColor: 'gray'
-                }
             },
 
             title: {
@@ -52,6 +52,12 @@ function loadIncidenceMap() {
             },
 
             legend: {
+                title: {
+                    text: "Legend (click bubbles to de-select ranges)",
+                    style: {
+                        "fontSize": '16px'
+                    }
+                },
                 layout: 'vertical',
                 align: 'right',
                 floating: true,
@@ -63,7 +69,7 @@ function loadIncidenceMap() {
             },
 
             colorAxis: {
-                minColor: '#efefef',
+                minColor: '#F1EEF6',
                 maxColor: partyColor,
                 dataClasses: [{
                     to: -20
@@ -105,8 +111,8 @@ function loadIncidenceMap() {
 
             tooltip: {
                 formatter: function() {
-                    return candidate_name + ' outperformed their party\'s House candidate by <b>' 
-                        + this.point.value.toFixed(2) + '</b>% in <b>' + this.point.name + '</b> county'
+                    return candidate_name + ' outperformed ' + pronoun + ' party\'s House candidate by <b>' 
+                        + this.point.value.toFixed(2) + '</b>% in <b>' + this.point.name + ' County </b>'
                 }
             },
 
@@ -136,7 +142,6 @@ function loadIncidenceMap() {
             }]
         });
     }, 0);
-    isLoading = false;
 }
 
 function loadScatters() {
@@ -159,7 +164,6 @@ function init() {
 }
 
 function switchCandidate() {
-    console.log('cheese')
     if (diff == clinton_diff) {
         diff = trump_diff
         partyColor = repColor;
@@ -171,16 +175,7 @@ function switchCandidate() {
     }
     loadIncidenceMap();
 }
-document.getElementById('switcher').addEventListener('click', e => {
-    switchCandidate();
-    if (!isLoading) {
-        chart.showLoading();
-        e.target.innerHTML = 'Hide loading';
-    } else {
-        chart.hideLoading();
-        e.target.innerHTML = 'Show loading';
-    }
-    isLoading = !isLoading;
-});
+
+document.getElementById('switcher').onclick = switchCandidate;
 
 document.addEventListener('DOMContentLoaded', init, false);
