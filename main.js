@@ -111,7 +111,7 @@ function loadIncidenceMap() {
 
             tooltip: {
                 formatter: function() {
-                    return candidate_name + ' outperformed ' + pronoun + ' party\'s House candidate by <b>' 
+                    return candidate_name + ' outperformed ' + pronoun + ' party\'s House candidates by <b>' 
                         + this.point.value.toFixed(2) + '</b>% in <b>' + this.point.name + ' County </b>'
                 }
             },
