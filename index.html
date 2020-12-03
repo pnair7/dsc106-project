@@ -6,13 +6,10 @@
     <title>Vote Splitting in the 2016 Presidential Election</title>
     <link rel="icon" type="image/png" href="flag.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abel">
-    <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/maps/modules/map.js"></script>
-    <script src="https://code.highcharts.com/maps/modules/data.js"></script>
     <script src=https://code.highcharts.com/mapdata/countries/us/us-all-all.js></script>
     <script src='data/dataload.js'></script>
-    <script src="main.js"></script>
     <style>
         * {
             font-family: 'Abel';
@@ -22,16 +19,50 @@
             font-size: 40px;
             text-align: center;
         }
+
+        button {
+            display:inline-block;
+            padding:0.35em 1.2em;
+            border:0.1em solid #FFFFFF;
+            margin:0 0.3em 0.3em 0;
+            border-radius:0.12em;
+            box-sizing: border-box;
+            font-weight:300;
+            color:#0015BC;
+            text-align:center;
+        }
+
+        button:hover{
+            color:#000000;
+            background-color:#AAFFAA;
+        }
+
+        #switcher {
+            font-size: 30px;
+        }
+
+        #buttonContainer {
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
 	<section id='intro'>
         <h1>Vote Splitting in the 2016 Presidential Election</h1>
+        <h3>
+            <em>Vote splitting</em>, or split-ticket voting, is when voters choose candidates
+            from different parties for different offices. In this analysis, we'll define vote-splitting
+            as the difference between the 
+        </h3>
 	</section>
 
-	<section id="map" height = 1000>
-	</section>
+	<section id="map">
+    </section>
+
+    <div id = 'buttonContainer'>
+        <button id='switcher'>Switch Candidate</button>
+    </div>
 
 	<section id="scatter">
     </section>
@@ -46,5 +77,5 @@
     </section>
 
 </body>
-
+<script src="main.js"></script>
 </html>
