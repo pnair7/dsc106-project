@@ -5,8 +5,8 @@ let partyColor = repColor;
 let otherColor = demColor;
 let candidate_name = 'Trump'
 let pronoun = 'his';
-let county_spider_dict = {};
 let spider_data = spider_dict;
+let county_spider_dict = {};
 
 function loadIncidenceMap() {
     var countiesMap = Highcharts.geojson(
@@ -175,7 +175,7 @@ function loadSpider() {
 
     } else {
         data = [];
-        titleText = 'Click a county on the above map to learn more!'
+        titleText = '<b>Click a county on the above map to learn more!<b>'
     }
     
     console.log(data)
@@ -183,7 +183,8 @@ function loadSpider() {
     Highcharts.chart('spider', {
         chart: {
             polar: true,
-            type: 'line'
+            type: 'line',
+            height: 500
         },
     
         title: {
@@ -215,7 +216,12 @@ function loadSpider() {
             categories: ['Population', 'White', 'Over 65', 'Rural', 'Household Income', 'Turnout',
                 'Foreign-Born', 'College Educated'],
             tickmarkPlacement: 'on',
-            lineWidth: 0
+            lineWidth: 0,
+            labels: {
+                style: {
+                    fontSize: '15px'
+                }
+            }
         },
     
         yAxis: {
@@ -227,12 +233,15 @@ function loadSpider() {
     
         tooltip: {
             shared: true,
-            pointFormat: '{series.name}: <b>{point.y:,.0f}th</b> percentile<br/>'
+            pointFormat: '{series.name}: <b>{point.y:,.0f}th</b> percentile<br/>',
+            style: {
+                fontSize: '15px'
+            }
         },
     
         legend: {
-            align: 'right',
-            verticalAlign: 'middle',
+            align: 'center',
+            verticalAlign: 'bottom',
             layout: 'vertical'
         },
     
