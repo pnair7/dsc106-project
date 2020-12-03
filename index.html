@@ -3,10 +3,14 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<title>Vote Splitting in the 2016 Presidential Election</title>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abel">
+    <title>Vote Splitting in the 2016 Presidential Election</title>
+    <link rel="icon" type="image/png" href="flag.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abel">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/maps/modules/map.js"></script>
+    <script src=https://code.highcharts.com/mapdata/countries/us/us-all-all.js></script>
+    <script src='dataload.js'></script>
     <script src="main.js"></script>
     <style>
         * {
@@ -15,6 +19,7 @@
 
         h1 {
             font-size: 40px;
+            text-align: center;
         }
     </style>
 </head>
@@ -27,15 +32,11 @@
 	<section id="map">
 	</section>
 
-	<hr />
-
 	<section id="scatter">
     </section>
 
     <section id='histogram'>
     </section>
-
-	<hr />
 
 	<section id="table">
     </section>

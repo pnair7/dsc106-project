@@ -1,10 +1,8 @@
 function loadIncidenceMap() {
     Highcharts.mapChart('map', {
         chart: {
-            borderWidth: 1,
-            map: 'countries/us/us-all-all'
+            map: Highcharts.maps["countries/us/us-all-all"],
         },
-
         title: {
             text: 'Vote splitting incidence, 2016'
         },
@@ -25,12 +23,9 @@ function loadIncidenceMap() {
         },
 
         series: [{
-            data: {
-                csvURL: window.location.origin + '/data/county_data.csv'
-            },
+            data: county_data,
             type: 'mapbubble',
             name: 'Vote splitting incidence, 2016',
-            joinBy: ['code'],
             minSize: 4,
             maxSize: '12%',
         }]
