@@ -5,6 +5,8 @@ let partyColor = repColor;
 let otherColor = demColor;
 let candidate_name = 'Trump'
 let pronoun = 'his';
+let county_spider_dict = {};
+let spider_data = spider_dict;
 
 function loadIncidenceMap() {
     var countiesMap = Highcharts.geojson(
@@ -106,6 +108,14 @@ function loadIncidenceMap() {
                 mapline: {
                     showInLegend: false,
                     enableMouseTracking: false
+                },
+                series: {
+                    events: {
+                        click: function(e) {
+                            county_spider_dict = spider_data[e.point['hc-key']];
+                            loadSpider();
+                        }
+                    }
                 }
             },
 
@@ -144,6 +154,115 @@ function loadIncidenceMap() {
     }, 0);
 }
 
+function loadSpider() {
+    let titleText = '';
+    let data = [];
+    let lineColor = demColor;
+    console.log(county_spider_dict)
+
+    if ('data' in county_spider_dict) {
+        data = county_spider_dict['data'];
+        titleText = '';
+        let margin = Number(county_spider_dict['margin'])
+
+        // format title
+        if (margin >= 0) {
+            titleText = '<span class=\"repColor\">Trump</span> won <b>' + county_spider_dict['name'] + '</b> by <b>' + margin.toFixed(2) + '%</b>'
+            lineColor = repColor;
+        } else {
+            titleText = '<span class=\"demColor\">Clinton</span> won <b>' + county_spider_dict['name'] + '</b> by <b>' + (margin * -1).toFixed(2) + '%</b>'
+        }
+
+    } else {
+        data = [];
+        titleText = 'Click a county on the above map to learn more!'
+    }
+    
+    console.log(data)
+
+    Highcharts.chart('spider', {
+        chart: {
+            polar: true,
+            type: 'line'
+        },
+    
+        title: {
+            text: titleText,
+            x: -80,
+            useHTML: true,
+            style: {
+                "fontSize" : "24px",
+                "font-family" : "Abel"
+            }
+        },
+
+        plotOptions: {
+            line: {
+                color: lineColor
+            },
+            series: {
+                animation: {
+                    duration: 1000
+                }
+            }
+        },
+    
+        pane: {
+            size: '90%'
+        },
+    
+        xAxis: {
+            categories: ['Population', 'White', 'Over 65', 'Rural', 'Household Income', 'Turnout',
+                'Foreign-Born', 'College Educated'],
+            tickmarkPlacement: 'on',
+            lineWidth: 0
+        },
+    
+        yAxis: {
+            gridLineInterpolation: 'polygon',
+            lineWidth: 0,
+            min: 0,
+            max: 100
+        },
+    
+        tooltip: {
+            shared: true,
+            pointFormat: '{series.name}: <b>{point.y:,.0f}th</b> percentile<br/>'
+        },
+    
+        legend: {
+            align: 'right',
+            verticalAlign: 'middle',
+            layout: 'vertical'
+        },
+    
+        series: [{
+            name: county_spider_dict['name'],
+            data: data,
+            pointPlacement: 'on'
+        }],
+    
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        align: 'center',
+                        verticalAlign: 'center',
+                        layout: 'horizontal'
+                    },
+                    pane: {
+                        size: '70%'
+                    }
+                }
+            }]
+        }
+    
+    });
+};
+
 function loadScatters() {
 
 }
@@ -158,6 +277,7 @@ function populateTable() {
 
 function init() {
     loadIncidenceMap();
+    loadSpider();
     loadScatters();
     loadBar();
     populateTable();
