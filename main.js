@@ -7,6 +7,8 @@ let candidate_name = 'Trump'
 let pronoun = 'his';
 let spider_data = spider_dict;
 let county_spider_dict = {};
+let bubble_data = bubble_dict;
+let bubble_prepped = {};
 
 function loadIncidenceMap() {
     var countiesMap = Highcharts.geojson(
@@ -158,7 +160,6 @@ function loadSpider() {
     let titleText = '';
     let data = [];
     let lineColor = demColor;
-    console.log(county_spider_dict)
 
     if ('data' in county_spider_dict) {
         data = county_spider_dict['data'];
@@ -178,8 +179,6 @@ function loadSpider() {
         titleText = '<b>Click a county on the above map to learn more!<b>'
     }
     
-    console.log(data)
-
     Highcharts.chart('spider', {
         chart: {
             polar: true,
@@ -291,20 +290,158 @@ function loadSpider() {
     });
 };
 
-// takes full data and formats it for Highcharts series data
-function formatBubbleData(x, y, z) {
-
+// this is from stackoverflow, https://stackoverflow.com/questions/30143082/how-to-get-color-value-from-gradient-by-percentage-with-javascript/30144587
+function pickHex(weight) {
+    if (typeof weight != 'number') {
+        return null
+    }
+    let color1 = [255, 0, 0];
+    let color2 = [0, 21, 188];
+    var w1 = weight;
+    var w2 = 1 - w1;
+    var rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
+        Math.round(color1[1] * w1 + color2[1] * w2),
+        Math.round(color1[2] * w1 + color2[2] * w2)];
+    return "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);;
 }
 
-function loadBubbles() {
+// takes full data and formats it for Highcharts series data
+function formatBubbleData(x) {
+    bubble_prepped = [];
 
+    // x = variable, y = trump margin, z = population
+    for (i = 0; i < bubble_data.length; i++) {
+        county = bubble_data[i];
+        try {
+            bubble_prepped.push({
+                x : Number(county[x].toPrecision(3)),
+                y: Number(county.margin.toPrecision(3)),
+                z: county['Population'],
+                name: county['name'],
+                color: pickHex((county.margin + 100) / 200)
+            })
+        } catch (e) {
+        }
+    }
+    return bubble_prepped;
+}
+
+function loadBubbles(x) {
+    let data = formatBubbleData(x);
+
+    Highcharts.chart('bubble', {
+        chart: {
+            type: 'bubble',
+            plotBorderWidth: 1,
+            zoomType: 'xy',
+            height: 550
+        },
+    
+        legend: {
+            enabled: false
+        },
+    
+        title: {
+            text: 'How did <b>' + x + '</b> correlate with Trump\'s margin of victory?',
+            style: {
+                "fontSize" : '24px',
+                "fontFamily" : 'Abel'
+            },
+            useHTML: true
+        },
+
+        subtitle: {
+            text: 'Bubble size is population',
+            style: {
+                "fontSize" : '18px'
+            }
+        },
+    
+        xAxis: {
+            gridLineWidth: 1,
+            title: {
+                text: x,
+                style: {
+                    "fontSize" : "20px",
+                    "font-family" : "Abel",
+                    "font-weight" : "bold"
+                }
+            },
+            labels: {
+                format: '{value}',
+                style: {
+                    "fontSize" : "15px",
+                    "font-family" : "Abel",
+                    "font-weight" : "bold"
+                }
+            }
+        },
+    
+        yAxis: {
+            startOnTick: false,
+            endOnTick: false,
+            title: {
+                text: 'Trump victory margin',
+                style: {
+                    "fontSize" : "20px",
+                    "font-family" : "Abel",
+                    "font-weight" : "bold"
+                }
+            },
+            labels: {
+                format: '{value}',
+                style: {
+                    "fontSize" : "15px",
+                    "font-family" : "Abel",
+                    "font-weight" : "bold"
+                }
+            },
+            plotLines: [{
+                color: '#FF0000',
+                width: 2,
+                value: 0 // Need to set this probably as a var.
+            }]
+        },
+    
+        tooltip: {
+            useHTML: true,
+            headerFormat: '',
+            pointFormat: 
+                '<b>{point.name}</b><br/>' +
+                x + ': {point.x}<br/>' +
+                'Margin of Trump victory: {point.y}%<br/>' +
+                'Population: {point.z}',
+            followPointer: true,
+            style: {
+                "fontSize" : "15px",
+                "font-family" : "Abel"
+            }
+        },
+    
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    enabled: false
+                }
+            },
+            bubble: {
+                minSize: 1
+            }
+        },
+    
+        series: [{
+            data: data,
+            name: x
+        }]
+    
+    });
 }
 
 
 function init() {
     loadIncidenceMap();
     loadSpider();
-    loadBubbles();
+    loadBubbles('Percent Rural');
 }
 
 function switchCandidate() {

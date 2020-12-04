@@ -12,6 +12,7 @@
     <script src=https://code.highcharts.com/mapdata/countries/us/us-all-all.js></script>
     <script src='data/dataload.js'></script>
     <script src='data/spider_dict.js'></script>
+    <script src='data/bubble_data.js'></script>
     <style>
         * {
             font-family: 'Abel';
@@ -24,6 +25,10 @@
         h3, p, h2 {
             margin-left: 20%;
             margin-right: 20%;
+        }
+
+        .highcharts-tooltip > span {
+            font-family:'Abel'!important;
         }
 
         button {
@@ -65,6 +70,16 @@
         .demColor {
             color: #0015BC;
             font-weight: bold;
+        }
+
+        #bubblebuttons {
+            margin-left: 20%;
+            margin-right: 20%;
+            align-items: center;
+        }
+
+        #bubblebuttons > button {
+            font-size: 20px;
         }
     </style>
 </head>
@@ -137,7 +152,28 @@
         </h3>
     </section>
 
+    <section id='bubblebuttons' style="display: inline-block;">
+        <button onclick="loadBubbles('2012 Romney Vote Share')">2012 Romney Vote Share</button>
+        <button onclick="loadBubbles('2016 Republican House Vote Share')">2016 Republican House Vote Share</button>
+        <button onclick="loadBubbles('Population')">Population</button>
+        <button onclick="loadBubbles('Percent White')">Percent White</button>
+        <button onclick="loadBubbles('Percent 65+')">Percent 65+</button>
+        <button onclick="loadBubbles('Percent Rural')">Percent Rural</button>
+        <button onclick="loadBubbles('Median Household Income')">Median Household Income</button>
+        <button onclick="loadBubbles('Turnout')">Turnout</button>
+        <button onclick="loadBubbles('Percent Foreign-Born')">Percent Foreign-Born</button>
+        <button onclick="loadBubbles('Percent with Some College')">Percent with Some College</button>
+    </section>
+
 	<section id="bubble">
+    </section>
+
+    <section id='postBubble'>
+        <h3>
+            It seems from these scatterplots that Trump performed better in counties
+            with lower populations, more voters who were white, old, or rural, with lower 
+            median incomes, and with fewer foreign-born or college-educated residents.
+        </h3>
     </section>
 
     <section id='heatmap'>
