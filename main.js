@@ -194,7 +194,19 @@ function loadSpider() {
             style: {
                 "fontSize" : "24px",
                 "font-family" : "Abel"
-            }
+            },
+            align: "center",
+            x: 0
+        },
+
+        subtitle: {
+            text: 'Values are percentiles among all U.S. counties',
+            style: {
+                "fontSize" : "18px",
+                "font-family" : "Abel"
+            },
+            align: "center",
+            x: 0
         },
 
         plotOptions: {
@@ -208,6 +220,10 @@ function loadSpider() {
             }
         },
     
+        legend: {
+            enabled: false
+        },
+
         pane: {
             size: '90%'
         },
@@ -236,19 +252,22 @@ function loadSpider() {
             pointFormat: '{series.name}: <b>{point.y:,.0f}th</b> percentile<br/>',
             style: {
                 fontSize: '15px'
-            }
+            },
+            headerFormat : '<span style="font-size: 15px"><b>{point.key}</b></span><br/>'
         },
     
         legend: {
             align: 'center',
             verticalAlign: 'bottom',
-            layout: 'vertical'
+            layout: 'vertical',
+            text: 'County Percentiles'
         },
     
         series: [{
             name: county_spider_dict['name'],
             data: data,
-            pointPlacement: 'on'
+            pointPlacement: 'on',
+            showInLegend: false
         }],
     
         responsive: {
@@ -272,24 +291,20 @@ function loadSpider() {
     });
 };
 
-function loadScatters() {
+// takes full data and formats it for Highcharts series data
+function formatBubbleData(x, y, z) {
 
 }
 
-function loadBar() {
+function loadBubbles() {
 
 }
 
-function populateTable() {
-
-}
 
 function init() {
     loadIncidenceMap();
     loadSpider();
-    loadScatters();
-    loadBar();
-    populateTable();
+    loadBubbles();
 }
 
 function switchCandidate() {

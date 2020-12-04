@@ -18,11 +18,10 @@
         }
 
         h1 {
-            font-size: 40px;
             text-align: center;
         }
 
-        h3 {
+        h3, p, h2 {
             margin-left: 20%;
             margin-right: 20%;
         }
@@ -72,16 +71,28 @@
 
 <body>
 	<section id='intro'>
-        <h1>Vote Splitting in the 2016 Presidential Election</h1>
+        <h1 style='font-size: 40px;'>Drilling Down into the 2016 Election</h1>
+
+        <h3>
+            The 2016 election is, and will likely remain for a while, the most closely analyzed election in American history.
+            Donald Trump overturned decades of conventional wisdom, taking down the Democratic "blue wall" in the Midwest, and 
+            flipping many areas Republicans had feared lost after two straight losses in 2008 and 2012. By looking at where now-President
+            Trump outperformed his Republican colleagues, and what demographic characteristics correlated with his success, 
+            we might be able to figure out why. All data is from the <a href = 'https://electionlab.mit.edu/'>MIT Election Data and Science Lab</a>, 
+            and can be found <a href = 'https://github.com/MEDSL/2018-elections-unoffical'>here</a>. As to why the data is missing
+            in Kansas, Mississippi, and Alaska... you'll have to take it up with them.
+        </h3>
+
+        <h2 style="text-align: center;">
+            Vote Splitting
+        </h2>
+
         <h3>
             <em>Vote splitting</em>, or split-ticket voting, is when voters choose candidates
             from different parties for different offices. In this analysis, we'll define vote-splitting
             as the difference between the proportion of the votes for a presidential candidate and 
             the House candidate of their own party -- we don't know how many people actually split their ticket, since
-            we don't have access to individual ballots, so this is as close as we can get. The data in the following map
-            is from the <a href = 'https://electionlab.mit.edu/'>MIT Election Data and Science Lab</a>, 
-            and can be found <a href = 'https://github.com/MEDSL/2018-elections-unoffical'>here</a>. As to why the data is missing
-            in Kansas, Mississippi, and Alaska... you'll have to take it up with them.
+            we don't have access to individual ballots, so this is as close as we can get. 
         </h3>
 
         <h3>
@@ -114,20 +125,19 @@
     </section>
 
 
-    <section id = 'preScatter'>
+    <section id = 'preBubble'>
         <h2 style="text-align: center;">
-            Where did Trump outperform Republicans in 2016, and where did he lag behind?
+            What demographic characteristics are correlated with Donald Trump's success?
         </h2>
 
         <h3>
-            The 2016 election is, and will likely remain for a while, the most closely analyzed election in American history.
-            Donald Trump overturned decades of conventional wisdom, taking down the Democratic "blue wall" in the Midwest, and 
-            flipping many areas Republicans had feared lost after two straight losses in 2008 and 2012. By looking at where now-President
-            Trump outperformed his Republican colleagues, we might be able to figure out why.
+            OK, that spider chart was cool, but it doesn't tell us anything about support for Trump or Clinton as a whole. 
+            Let's take a look at the demographic factors most correlated with Trump's margin of victory. Remember, there are thousands
+            of counties in the US, so these might get a little messy.
         </h3>
     </section>
 
-	<section id="scatter">
+	<section id="bubble">
     </section>
 
     <section id='heatmap'>
@@ -140,10 +150,10 @@
     </section>
 
     <section id = 'disclaimers'>
-        <p>
+        <!-- <p>
             (Note, by the way, that counties can sometimes contain multiple Congressional districts, and vice versa, 
             but the House numbers are for all the voters in a county no matter how districts are divided.)
-        </p>
+        </p> -->
     </section>
 
 </body>
