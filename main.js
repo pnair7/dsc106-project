@@ -351,7 +351,7 @@ function loadBubbles(x) {
         },
 
         subtitle: {
-            text: 'Bubble size is population',
+            text: 'bubble size represents population, drag over area to zoom',
             style: {
                 "fontSize" : '18px'
             }
@@ -409,7 +409,7 @@ function loadBubbles(x) {
             pointFormat: 
                 '<b>{point.name}</b><br/>' +
                 x + ': {point.x}<br/>' +
-                'Margin of Trump victory: {point.y}%<br/>' +
+                'Trump margin: {point.y}%<br/>' +
                 'Population: {point.z}',
             followPointer: true,
             style: {
@@ -441,7 +441,7 @@ function loadBubbles(x) {
 function init() {
     loadIncidenceMap();
     loadSpider();
-    loadBubbles('Percent Rural');
+    loadBubbles('Percent White');
 }
 
 function switchCandidate() {
