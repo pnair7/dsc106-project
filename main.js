@@ -444,6 +444,7 @@ function loadBubbles(x) {
         }]
     
     });
+    document.getElementById("bubble").scrollIntoView();
 }
 
 
