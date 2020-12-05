@@ -444,7 +444,7 @@ function loadBubbles(x) {
         }]
     
     });
-    document.getElementById("bubble").scrollIntoView();
+    document.getElementById("population").scrollIntoView();
 }
 
 
