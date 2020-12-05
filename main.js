@@ -444,7 +444,9 @@ function loadBubbles(x, first=false) {
         }]
     
     });
-    document.getElementById("population").scrollIntoView();
+    if (!first) {
+        document.getElementById("population").scrollIntoView();
+    }
 }
 
 
