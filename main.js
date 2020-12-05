@@ -116,6 +116,7 @@ function loadIncidenceMap() {
                         click: function(e) {
                             county_spider_dict = spider_data[e.point['hc-key']];
                             loadSpider();
+                            document.getElementById("spider").scrollIntoView();
                         }
                     }
                 }
@@ -428,6 +429,7 @@ function loadBubbles(x) {
                     click: function(e) {
                         county_spider_dict = spider_data[e.point.code];
                         loadSpider();
+                        document.getElementById("spider").scrollIntoView();
                     }
                 }
             },
