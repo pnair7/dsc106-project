@@ -328,7 +328,7 @@ function formatBubbleData(x) {
     return bubble_prepped;
 }
 
-function loadBubbles(x) {
+function loadBubbles(x, first=false) {
     let data = formatBubbleData(x);
 
     Highcharts.chart('bubble', {
@@ -451,7 +451,7 @@ function loadBubbles(x) {
 function init() {
     loadIncidenceMap();
     loadSpider();
-    loadBubbles('Percent White');
+    loadBubbles('Percent White', true);
 }
 
 function switchCandidate() {
