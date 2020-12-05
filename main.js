@@ -176,7 +176,7 @@ function loadSpider() {
 
     } else {
         data = [];
-        titleText = '<b>Click a county on the above map to learn more!<b>'
+        titleText = '<b>Click a county on the map or scatterplot to learn more!<b>'
     }
     
     Highcharts.chart('spider', {
@@ -318,7 +318,8 @@ function formatBubbleData(x) {
                 y: Number(county.margin.toPrecision(3)),
                 z: county['Population'],
                 name: county['name'],
-                color: pickHex((county.margin + 100) / 200)
+                color: pickHex((county.margin + 100) / 200),
+                code: county['code']
             })
         } catch (e) {
         }
@@ -351,7 +352,7 @@ function loadBubbles(x) {
         },
 
         subtitle: {
-            text: 'bubble size represents population, drag over area to zoom',
+            text: 'bubble size represents population, drag over area to zoom, click bubble to see county info on spider chart',
             style: {
                 "fontSize" : '18px'
             }
@@ -381,7 +382,7 @@ function loadBubbles(x) {
             startOnTick: false,
             endOnTick: false,
             title: {
-                text: 'Trump victory margin',
+                text: 'Trump victory margin (%)',
                 style: {
                     "fontSize" : "20px",
                     "font-family" : "Abel",
@@ -422,6 +423,12 @@ function loadBubbles(x) {
             series: {
                 dataLabels: {
                     enabled: false
+                },
+                events: {
+                    click: function(e) {
+                        county_spider_dict = spider_data[e.point.code];
+                        loadSpider();
+                    }
                 }
             },
             bubble: {
