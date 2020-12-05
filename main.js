@@ -465,6 +465,7 @@ function switchCandidate() {
         candidate_name = 'Clinton'
     }
     loadIncidenceMap();
+    document.getElementById("map").scrollIntoView();
 }
 
 document.getElementById('switcher').onclick = switchCandidate;
