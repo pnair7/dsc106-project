@@ -4,13 +4,32 @@ let diff = trump_diff;
 let partyColor = repColor;
 let otherColor = demColor;
 let candidate_name = 'Trump'
-let pronoun = 'his';
 let spider_data = spider_dict;
 let county_spider_dict = {};
 let bubble_data = bubble_dict;
 let bubble_prepped = {};
 
-function loadIncidenceMap() {
+// takes full data and formats it for Highcharts series data
+function formatMapData(x) {
+    let prepped = [];
+
+    // x = variable, y = trump margin, z = population
+    for (i = 0; i < bubble_data.length; i++) {
+        county = bubble_data[i];
+        try {
+            prepped.push({
+                "hc-key": county['code'],
+                "value": county[x],
+                "name":county['name']
+            })
+        } catch (e) {
+        }
+    }
+    return prepped;
+}
+
+function loadIncidenceMap(feature, first=false) {
+    let data = formatMapData(feature);
     var countiesMap = Highcharts.geojson(
         Highcharts.maps['countries/us/us-all-all']
     ),
@@ -24,13 +43,63 @@ function loadIncidenceMap() {
         l => l.properties['hc-group'] === '__separator_lines__'
     );
 
-    // set minColor to be other party's color, set pronouns for candidates (used in tooltips), and set title
-    if (partyColor == repColor) {
-        otherColor = demColor;
-        pronoun = 'his';
-    } else {
-        otherColor = repColor;
-        pronoun = 'her';
+    let minColor = '#b0f2bc';
+    let maxColor = '#257d98'
+    let feature_name = feature;
+    let scaleType = 'linear';
+    let scaleMin = null;
+    let scaleMax = null;
+    
+    switch(feature) {
+        case 'margin':
+            minColor = demColor;
+            maxColor = repColor;
+            feature_name = 'Margin for Trump'
+            scaleMin = -52;
+            scaleMax = 52;
+            break;
+        case '2012 Romney Vote Share':
+            minColor = demColor;
+            maxColor = repColor;
+            scaleMin = 0.225;
+            scaleMax = 0.775;
+            break;
+        case '2016 Republican House Vote Share':
+            minColor = demColor;
+            maxColor = repColor;
+            scaleMin = 0.1;
+            scaleMax = 0.9;
+            break;
+        case 'Percent White':
+            scaleMin = 47.08;
+            scaleMax = 95.8;
+            break;
+        case 'Percent 65+':
+            scaleMin = 12.31;
+            scaleMax = 23.44;
+            break;
+        case 'Percent Rural':
+            scaleMin = 13.27;
+            scaleMax = 100;
+            break;
+        case 'Median Household Income':
+            scaleMin = 34458;
+            scaleMax = 62554;
+            break;
+        case 'Turnout':
+            scaleMin = 47.8;
+            scaleMax = 70.8;
+            break;
+        case 'Percent Foreign-Born':
+            scaleMin = 0.75;
+            scaleMax = 10.6;
+            break;
+        case 'Percent with Some College':
+            scaleMin = 11.76;
+            scaleMax = 33.0; 
+            break;
+        default:
+            break;
     }
 
     setTimeout(function () {
@@ -42,14 +111,14 @@ function loadIncidenceMap() {
             },
 
             title: {
-                text: 'How much did Donald Trump and Hillary Clinton outperform House candidates?',
+                text: '<b>' + feature_name + '</b> by county, 2016',
                 style: {
                     "fontSize": '28px'
                 }
             },
 
             subtitle: {
-                text: 'Percentage difference between presidential and house votes by county, 2016',
+                text: 'Click a county to find out more!',
                 style: {
                     "fontSize": '20px'
                 }
@@ -57,7 +126,7 @@ function loadIncidenceMap() {
 
             legend: {
                 title: {
-                    text: "Legend (click bubbles to de-select ranges)",
+                    text: "Legend",
                     style: {
                         "fontSize": '16px'
                     }
@@ -73,37 +142,11 @@ function loadIncidenceMap() {
             },
 
             colorAxis: {
-                minColor: '#F1EEF6',
-                maxColor: partyColor,
-                dataClasses: [{
-                    to: -20
-                }, {
-                    from: -20,
-                    to: -15
-                }, {
-                    from: -15,
-                    to: -10
-                }, {
-                    from: -10,
-                    to: -5
-                }, {
-                    from: -5,
-                    to: 0
-                }, {
-                    from: 0,
-                    to: 5
-                }, {
-                    from: 5,
-                    to: 10
-                }, {
-                    from: 10,
-                    to: 15
-                }, {
-                    from: 15,
-                    to: 20
-                }, {
-                    from: 20
-                }]
+                minColor: minColor,
+                maxColor: maxColor,
+                min: scaleMin,
+                max: scaleMax,
+                type: scaleType
             },
 
             plotOptions: {
@@ -124,15 +167,17 @@ function loadIncidenceMap() {
 
             tooltip: {
                 formatter: function() {
-                    return candidate_name + ' outperformed ' + pronoun + ' party\'s House candidates by <b>' 
-                        + this.point.value.toFixed(2) + '</b>% in <b>' + this.point.name + ' County </b>'
+                    return '<b>' + this.point.name + '</b>\'s ' + feature_name + ' is <b>' + this.point.value.toFixed(2) + '</b>';
+                },
+                style: {
+                    "fontSize" : '15px'
                 }
             },
 
             series: [{
                 mapData: countiesMap,
-                data: diff,
-                name: 'Outperformance',
+                data: data,
+                name: 'Value',
                 borderWidth: 0.5,
                 states: {
                     hover: {
@@ -155,6 +200,10 @@ function loadIncidenceMap() {
             }]
         });
     }, 0);
+
+    if (!first) {
+        document.getElementById("marginbutton").scrollIntoView();
+    }
 }
 
 function loadSpider() {
@@ -193,7 +242,8 @@ function loadSpider() {
             useHTML: true,
             style: {
                 "fontSize" : "24px",
-                "font-family" : "Abel"
+                "font-family" : "Abel",
+                "text-align" : 'center'
             },
             align: "center",
             x: 0
@@ -451,25 +501,10 @@ function loadBubbles(x, first=false) {
 
 
 function init() {
-    loadIncidenceMap();
+    loadIncidenceMap('margin', true);
     loadSpider();
     loadBubbles('Percent White', true);
+    window.scrollTo(0, 0);
 }
-
-function switchCandidate() {
-    if (diff == clinton_diff) {
-        diff = trump_diff
-        partyColor = repColor;
-        candidate_name = 'Trump'
-    } else {
-        diff = clinton_diff
-        partyColor = demColor;
-        candidate_name = 'Clinton'
-    }
-    loadIncidenceMap();
-    document.getElementById("map").scrollIntoView();
-}
-
-document.getElementById('switcher').onclick = switchCandidate;
 
 document.addEventListener('DOMContentLoaded', init, false);

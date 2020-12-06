@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8" />
-    <title>Drilling Down into the 2016 Election</title>
+    <title>American Demographics and the 2016 Election</title>
     <link rel="icon" type="image/png" href="flag.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abel">
     <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -72,13 +72,13 @@
             font-weight: bold;
         }
 
-        #bubblebuttons {
+        #bubblebuttons, #mapbuttons {
             margin-left: 20%;
             margin-right: 20%;
             align-items: center;
         }
 
-        #bubblebuttons > button {
+        #bubblebuttons > button, #mapbuttons > button{
             font-size: 20px;
         }
     </style>
@@ -86,46 +86,50 @@
 
 <body>
 	<section id='intro'>
-        <h1 style='font-size: 40px;'>Drilling Down into the 2016 Election</h1>
+        <h1 style='font-size: 40px;'>American Demographics and the 2016 Election</h1>
 
         <h3>
             The 2016 election is, and will likely remain for a while, the most closely analyzed election in American history.
             (It's also the last presidential election I can find a good county-level dataset for.)
             Donald Trump overturned decades of conventional wisdom, taking down the Democratic "blue wall" in the Midwest and 
             flipping many areas Republicans had feared lost after two straight losses in 2008 and 2012. By looking at where now-President
-            Trump outperformed his Republican colleagues, and what demographic characteristics correlated with his success, 
-            we might be able to figure out why. All data is from the <a href = 'https://electionlab.mit.edu/'>MIT Election Data and Science Lab</a>, 
-            and can be found <a href = 'https://github.com/MEDSL/2018-elections-unoffical'>here</a>. As to why the data is missing
-            in Kansas, Mississippi, and Alaska... you'll have to take it up with them.
+            Trump outperformed previous Republicans, and what demographic characteristics correlated with his success, 
+            we might be able to figure out why.
+        </h3>    
+        
+        <h3>
+            All data is from the <a href = 'https://electionlab.mit.edu/'>MIT Election Data and Science Lab</a>, 
+            and can be found <a href = 'https://github.com/MEDSL/2018-elections-unoffical'>here</a>. As to why data is missing
+            in Kansas, Mississippi, Alaska, and a bit of Iowa... you'll have to take it up with them.
         </h3>
 
         <h2 style="text-align: center;">
-            Vote Splitting
+            National Demographics
         </h2>
 
         <h3>
-            <em>Vote splitting</em>, or split-ticket voting, is when voters choose candidates
-            from different parties for different offices. In this analysis, we'll define vote-splitting
-            as the difference between the proportion of the votes for a presidential candidate and 
-            the House candidate of their own party -- we don't know how many people actually split their ticket, since
-            we don't have access to individual ballots, so this is as close as we can get. 
+            Use the following buttons to look at the corresponding variables by county in the US!
+            Remember, counties don't have the same amounts of people in them -- you can barely see New
+            York City on the map, but it has a greater population than all but 11 <i>states</i>. If you click on
+            a county, you can see its percentile rank nationally in the demographic categories on the spider chart below.
         </h3>
-
-        <h3>
-            By the way, we shouldn't combine this into a single map, since vote-splitting doesn't necessarily mean you
-            chose the other major party instead -- you could vote for a third party, or not at all. Take, for example, 
-            my home county of Alameda County, CA; Trump outperformed Republican House candidates by <b>0.09%</b>, but Clinton 
-            underperformed Democratic House candidates by <b>6.74%</b>.
-        </h3>
-	</section>
+    </section>
+    
+    <section id='mapbuttons' style="display: inline-block;">
+        <button id='marginbutton' onclick="loadIncidenceMap('margin')">Trump Margin</button>
+        <button onclick="loadIncidenceMap('2012 Romney Vote Share')">2012 Romney Vote Share</button>
+        <button onclick="loadIncidenceMap('2016 Republican House Vote Share')">2016 Republican House Vote Share</button>
+        <button onclick="loadIncidenceMap('Percent White')">Percent White</button>
+        <button onclick="loadIncidenceMap('Percent 65+')">Percent 65+</button>
+        <button onclick="loadIncidenceMap('Percent Rural')">Percent Rural</button>
+        <button onclick="loadIncidenceMap('Median Household Income')">Median Household Income</button>
+        <button onclick="loadIncidenceMap('Turnout')">Turnout</button>
+        <button onclick="loadIncidenceMap('Percent Foreign-Born')">Percent Foreign-Born</button>
+        <button onclick="loadIncidenceMap('Percent with Some College')">Percent with Some College</button>
+    </section>
 
 	<section id="map">
     </section>
-
-    <div id = 'buttonContainer'>
-        <button id='switcher'>Switch Candidate</button>
-    </div>
-
     
     <section id='spider'>
     </section>
@@ -135,14 +139,6 @@
             Click a county on the map or a bubble on the scatterplot to find out more about the county!
         </p>
         <br>
-
-        <h3>
-            We find some interesting insights -- the most interesting, in my opinion, is how Hillary Clinton way outperforms
-            Democratic House candidates in heavily-Republican Arkansas. You wouldn't notice that on a normal election map, where
-            Arkansas would look just as red as any of the surrounding Southern states (indeed, Trump won the state with the highest
-            margin of any Republican since Nixon). But since it stands out on this map, you might realize that Clinton's performance
-            in the state was likely due to the fact that she was once the state's First Lady. 
-        </h3>
     </section>
 
 
@@ -154,7 +150,7 @@
         <h3>
             OK, that spider chart was cool, but it doesn't tell us anything about support for Trump or Clinton as a whole. 
             Let's take a look at the demographic factors most correlated with Trump's margin of victory. Remember, there are thousands
-            of counties in the US, so these might get a little messy.
+            of counties in the US, so these might get a little messy. And once again, click a bubble to find out more about the county.
         </h3>
     </section>
 
@@ -180,9 +176,29 @@
             with lower populations, more voters who were white, old, or rural, with lower 
             median incomes, and with fewer foreign-born or college-educated residents.
         </h3>
+
+        <h3>
+            Remember, by the way, that we're grouping this data <i>by county.</i> For example, you might 
+            have been surprised that the richest counties in the country voted Democrat, but it's likely
+            that the countries with the highest median income are urban and suburban, and therefore lean blue;
+            I'm going out on a limb here, but it's also possible that the richest Republicans are more likely to
+            live in heavily Democratic urban areas where our metric might not weight them heavily (remember, <i>median</i>, 
+            not average.) 
+        </h3>
+
+        <h3>
+            But we also see that the spread of these variables is relatively large, and there are plenty of outliers.
+            There are heavily white Democratic counties, Republican counties with many immigrants, very rural blue counties, 
+            and very educated red counties. Demographic analysis of voting can be dangerous, because it allows us to place
+            each other into neat little boxes. This approach is simple; it is also deeply flawed. The above graphs tell us a lot
+            about how Americans vote as a whole, but they tell us <i>nothing</i> about how any single individual votes.
+        </h3>
     </section>
 
     <section id = 'outro'>
+        <p>
+            Info info info
+        </p>
     </section>
 
 </body>
