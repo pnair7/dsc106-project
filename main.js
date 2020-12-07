@@ -508,3 +508,6 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init, false);
+
+// TODO: color palette, end info, check everything (esp. text), conclusion
+// https://carto.com/carto-colors/
