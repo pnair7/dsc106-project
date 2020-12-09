@@ -1,6 +1,5 @@
 const demColor = '#0015BC'
 const repColor = '#FF0000'
-let diff = trump_diff;
 let partyColor = repColor;
 let otherColor = demColor;
 let candidate_name = 'Trump'
@@ -94,7 +93,7 @@ function loadIncidenceMap(feature, first=false) {
             scaleMin = 0.75;
             scaleMax = 10.6;
             break;
-        case 'Percent with Some College':
+        case 'Percent with Bachelor\'s Degree or Above':
             scaleMin = 11.76;
             scaleMax = 33.0; 
             break;
@@ -280,7 +279,7 @@ function loadSpider() {
     
         xAxis: {
             categories: ['Population', 'White', 'Over 65', 'Rural', 'Household Income', 'Turnout',
-                'Foreign-Born', 'College Educated'],
+                'Foreign-Born', 'Bachelor\'s Degree'],
             tickmarkPlacement: 'on',
             lineWidth: 0,
             labels: {
